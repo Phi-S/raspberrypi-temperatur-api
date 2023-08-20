@@ -19,8 +19,10 @@ def temperature_root():
         try:
             temperature = dhtDevice.temperature
             humidity = dhtDevice.humidity
-            if (isinstance(temperature, int) or isinstance(temperature, float)) and (
-                    isinstance(humidity, int) or isinstance(humidity, float)):
+            if ((isinstance(temperature, int) or isinstance(temperature, float))
+                    and -10 < temperature < 60 and
+                    (isinstance(humidity, int) or isinstance(humidity, float))
+                    and 0 < humidity <= 100):
                 return {"temperature": temperature, "humidity": humidity}
             else:
                 print("Not an int or float. retry")
