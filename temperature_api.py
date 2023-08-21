@@ -8,8 +8,6 @@ import uvicorn
 from fastapi import FastAPI, HTTPException, Response
 
 port = 8001
-
-dhtDevice = adafruit_dht.DHT22(board.D4)
 app = FastAPI()
 
 
@@ -17,8 +15,9 @@ app = FastAPI()
 def temperature_root():
     for i in range(10):
         try:
-            temperature = dhtDevice.temperature
-            humidity = dhtDevice.humidity
+            dht_device = adafruit_dht.DHT22(board.D4)
+            temperature = dht_device.temperature
+            humidity = dht_device.humidity
             if ((isinstance(temperature, int) or isinstance(temperature, float))
                     and -10 < temperature < 60 and
                     (isinstance(humidity, int) or isinstance(humidity, float))
