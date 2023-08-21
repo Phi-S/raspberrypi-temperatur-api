@@ -10,12 +10,12 @@ from fastapi import FastAPI, HTTPException, Response
 port = 8001
 app = FastAPI()
 
+dht_device = adafruit_dht.DHT22(board.D4)
 
 @app.get("/")
 def temperature_root():
     for i in range(10):
         try:
-            dht_device = adafruit_dht.DHT22(board.D4)
             temperature = dht_device.temperature
             humidity = dht_device.humidity
             if ((isinstance(temperature, int) or isinstance(temperature, float))
@@ -25,9 +25,11 @@ def temperature_root():
                 return {"temperature": temperature, "humidity": humidity}
             else:
                 print("Not an int or float. retry")
+                time.sleep(1)
                 continue
         except Exception:
             print("retry")
+            time.sleep(1)
             continue
     else:
         return Response(status_code=500)
